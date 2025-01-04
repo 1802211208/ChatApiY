@@ -1,0 +1,55 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storePassword": "0000001DFD84AD11BAC3AA758B74EF222EE39A36B3F35D796E5EEB4C2C48D76906C7EC41B91EC64D64FD9C885B",
+          "certpath": "D:/hmWork/other/ChatApiY/ChatApi.cer",
+          "keyAlias": "chataikey",
+          "keyPassword": "0000001D19463C5192196CA701C5CE77F58CAAB77E02386FD30E8EC389F59F78CA1980D46A23656F83D9073A12",
+          "profile": "D:/hmWork/other/ChatApiY/ChatApiYProfileProductRelease.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "D:/hmWork/other/.p12"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.1(13)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": true
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
