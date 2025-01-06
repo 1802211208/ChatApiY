@@ -29,13 +29,14 @@ export class ApiService {
 
       if (response.responseCode === 200) {
         const responseData = response.result as ApiResponse;
-        return responseData.choices[0].message.content;
+        return responseData.choices[0].message.content as string;
       } else {
         throw new Error(`HTTP错误: ${response.responseCode}`);
       }
     } catch (error) {
-      console.error('API请求失败:', error);
-      throw new Error(`HTTP错误: ${error}`);
+     const errorStr =  JSON.stringify(error);
+      console.error('API请求失败:', errorStr);
+      throw new Error(`HTTP错误: ${errorStr}`);
     } finally {
       httpRequest.destroy();
     }

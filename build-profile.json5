@@ -5,11 +5,11 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "storePassword": "0000001DFD84AD11BAC3AA758B74EF222EE39A36B3F35D796E5EEB4C2C48D76906C7EC41B91EC64D64FD9C885B",
-          "certpath": "D:/hmWork/other/ChatApiY/ChatApi.cer",
+          "storePassword": "0000001DF13F44EC195281EA6131D475824AA6F860D0A0731DD1C12C230BF130C0F77400A7E73FD0329BD92AD4",
+          "certpath": "D:/hmWork/other/ChatApiY/debug/ChatApiYDebug.cer",
           "keyAlias": "chataikey",
-          "keyPassword": "0000001D19463C5192196CA701C5CE77F58CAAB77E02386FD30E8EC389F59F78CA1980D46A23656F83D9073A12",
-          "profile": "D:/hmWork/other/ChatApiY/ChatApiYProfileProductRelease.p7b",
+          "keyPassword": "0000001D427422C01165EF9F841105669068343A47C07D9BCEC7C632444BB9CBD933EE41714A75D8C1AE04F512",
+          "profile": "D:/hmWork/other/ChatApiY/debug/ChatApiYProfileDebugDebug.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "D:/hmWork/other/.p12"
         }

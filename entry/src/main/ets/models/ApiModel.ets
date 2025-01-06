@@ -13,8 +13,18 @@ export interface ApifoxModel {
 }
 
 export interface ChatMessage {
-  content: string;
   role: string;
+  content: string | MessageContent[];
+}
+
+export interface MessageContent {
+  type: 'text' | 'image_url';
+  text?: string;
+  image_url?: ImageUrl;
+}
+
+export interface ImageUrl {
+  url: string;
 }
 
 interface GeneratedTypeLiteralInterface_1 {

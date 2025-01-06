@@ -1,4 +1,4 @@
-import { ChatMessage } from '../models/ApiModel';
+import { ChatMessage, MessageContent } from '../models/ApiModel';
 import { ApiService, ChatRequestConfig } from './ApiService';
 import { ConfigService } from './ConfigService';
 import { ChatConfig, DEFAULT_CONFIG } from '../models/ConfigModel';
@@ -76,6 +76,54 @@ export class MessageService {
         content: "抱歉，响应出现错误：" + error
       };
     }
+  }
+
+  // async sendMessageWithImage(text: string, imageBase64: string): Promise<ChatMessage> {
+  //   await this.ensureInitialized();
+  //   const message: ChatMessage = {
+  //     role: 'user',
+  //     content: [
+  //       {
+  //         type: 'text',
+  //         text: text
+  //       },
+  //       {
+  //         type: 'image_url',
+  //         image_url: {
+  //           url: `data:image/jpeg;base64,${imageBase64}`
+  //         }
+  //       }
+  //     ]
+  //   };
+  //
+  //   try {
+  //     const chatConfig: ChatRequestConfig = {
+  //       apiKey: this.currentConfig.apiKey,
+  //       apiUrl: this.currentConfig.apiUrl,
+  //       modelId: this.currentModel,
+  //       maxTokens: this.currentConfig.maxTokens,
+  //       temperature: this.currentConfig.temperature,
+  //       presencePenalty: this.currentConfig.presencePenalty,
+  //       frequencyPenalty: this.currentConfig.frequencyPenalty,
+  //       topP: this.currentConfig.topP
+  //     };
+  //
+  //     const aiResponse = await this.apiService.chat([message], chatConfig);
+  //     return {
+  //       role: 'assistant',
+  //       content: aiResponse
+  //     };
+  //   } catch (error) {
+  //     console.error('图片消息处理失败:', error);
+  //     return {
+  //       role: 'assistant',
+  //       content: "抱歉，处理图片时出现错误：" + error
+  //     };
+  //   }
+  // }
+
+  isMultipartMessage(content: string | MessageContent[]): boolean {
+    return Array.isArray(content);
   }
 
 }
