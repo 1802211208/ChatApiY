@@ -1,5 +1,6 @@
 import router from '@ohos.router';
 import bundleManager from '@ohos.bundle.bundleManager';
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -69,13 +70,57 @@ struct About {
             .margin({ bottom: 40 })
 
           // 应用简介
-          Text('ChatApiY是一款AI接口聚合工具，支持对接多个兼容OpenAI接口的服务，为您提供智能对话服务。')
+          Text('ChatApiY是一款开源的AI接口聚合工具，支持对接多个兼容OpenAI接口的服务，为您提供智能对话服务。')
             .fontSize(14)
             .fontColor('#333333')
             .margin({ bottom: 24 })
             .padding({ left: 20, right: 20 })
             .textAlign(TextAlign.Center)
 
+          // 添加开源信息
+          Column() {
+
+            Column() {
+              Text('本项目已在GitHub开源，欢迎Star和贡献代码：')
+                .fontSize(14)
+                .fontColor('#666666')
+                .margin({ bottom: 8 })
+
+              Row() {
+                Text('https://github.com/1802211208/ChatApiY')
+                  .fontSize(14)
+                  .fontColor('#007AFF')
+                  .margin({ right: 8 })
+
+                Button({ type: ButtonType.Circle }) {
+                  Image($r('app.media.ic_copy'))
+                    .width(16)
+                    .height(16)
+                }
+                .width(32)
+                .height(32)
+                .backgroundColor('#F0F0F0')
+                .onClick(() => {
+                  promptAction.showToast({
+                    message: '链接已复制',
+                    duration: 2000
+                  });
+                })
+              }
+              .onClick(() => {
+                promptAction.showToast({
+                  message: '链接已复制',
+                  duration: 2000
+                });
+              })
+            }
+            .width('100%')
+            .padding(16)
+            .backgroundColor('#F5F5F5')
+            .borderRadius(8)
+            .margin({ bottom: 16 })
+          }
+          .padding({ left: 20, right: 20 })
           Blank();
 
           Text('声明')
@@ -83,10 +128,13 @@ struct About {
             .fontWeight(FontWeight.Bold)
             .margin({ bottom: 12 })
 
-          Text('本应用是一个AI接口聚合工具，支持对接多个兼容OpenAI接口的服务。应用中提到的第三方服务名称（如DeepSeek等）均为其各自所有者的商标。本应用与这些服务提供商没有任何官方关联。\n\n用户在使用相关服务时，请遵守各服务提供商的服务条款和相关政策。本应用仅提供技术对接，不对第三方服务的可用性和内容承担责任。')
+          Text('本应用是一个开源的AI接口聚合工具，支持对接多个兼容OpenAI接口的服务。应用中提到的第三方服务名称（如DeepSeek等）均为其各自所有者的商标。本应用与这些服务提供商没有任何官方关联。\n\n用户在使用相关服务时，请遵守各服务提供商的服务条款和相关政策。本应用仅提供技术对接，不对第三方服务的可用性和内容承担责任。')
             .fontSize(12)
             .padding({ left: 20, right: 20 })
             .fontColor('#999999')
+
+
+
           Text('© 2025 ChatApiY All Rights Reserved')
             .fontSize(12)
             .fontColor('#999999')
