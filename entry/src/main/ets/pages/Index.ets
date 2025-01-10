@@ -3,6 +3,8 @@ import { Chat } from '../models/ApiModel';
 import { ChatService } from '../services/ChatService';
 import { AppRoutes } from '../common/AppRoutes';
 import { Profile } from './Profile';
+import { ChatConfig } from '../models/ConfigModel';
+import { ConfigService } from '../services/ConfigService';
 
 @Entry
 @Component
@@ -10,8 +12,32 @@ struct Index {
   @State chats: Chat[] = [];
   @State currentIndex: number = 0;
   private chatService: ChatService = ChatService.getInstance();
+  private configService: ConfigService = ConfigService.getInstance();
   private controller: TabsController = new TabsController();
 
+  // 添加配置检查方法
+  private async checkConfig(): Promise<boolean> {
+    try {
+      const config: ChatConfig = await this.configService.getConfig();
+      if (!config.apiKey || !config.apiUrl || config.models.length === 0) {
+        AlertDialog.show({
+          title: '配置缺失',
+          message: '请先完成API配置并添加可用模型',
+          confirm: {
+            value: '去配置',
+            action: () => {
+              router.pushUrl({ url: AppRoutes.Settings });
+            }
+          }
+        });
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error('配置检查失败:', error);
+      return false;
+    }
+  }
 
   aboutToAppear() {
     this.loadChats();
@@ -25,7 +51,6 @@ struct Index {
   async loadChats() {
     this.chats = await this.chatService.getAllChats();
   }
-
 
   build() {
     Tabs({ barPosition: BarPosition.End, controller: this.controller }) {
@@ -51,11 +76,13 @@ struct Index {
           .padding({ left: 16, right: 16 })
           .backgroundColor('#FFFFFF')
           .onClick(async () => {
-            const newChat = await this.chatService.createChat();
-            router.pushUrl({
-              url: 'pages/Chat',
-              params: { param: newChat.id }
-            });
+            if (await this.checkConfig()) {
+              const newChat = await this.chatService.createChat();
+              router.pushUrl({
+                url: 'pages/Chat',
+                params: { param: newChat.id }
+              });
+            }
           })
 
           // 会话列表
@@ -85,11 +112,13 @@ struct Index {
                 .width('100%')
                 .padding(16)
                 .backgroundColor(Color.White)
-                .onClick(() => {
-                  router.pushUrl({
-                    url: 'pages/Chat',
-                    params: { param: chat.id }
-                  });
+                .onClick(async () => {
+                  if (await this.checkConfig()) {
+                    router.pushUrl({
+                      url: 'pages/Chat',
+                      params: { param: chat.id }
+                    });
+                  }
                 })
               }
               .swipeAction({ end: this.DeleteButton(chat.id) })

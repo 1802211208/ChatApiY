@@ -1,6 +1,7 @@
 import { ChatConfig, DEFAULT_CONFIG } from '../models/ConfigModel';
 import { ConfigService } from '../services/ConfigService';
 import router from '@ohos.router';
+import { AppRoutes } from '../common/AppRoutes';
 
 @Entry
 @Component
@@ -34,7 +35,7 @@ struct Settings {
   private addModel(modelName: string): void {
     const trimmedName = modelName.trim();
     if (trimmedName && !this.config.models.includes(trimmedName)) {
-      this.config.models = [...this.config.models, trimmedName];
+      this.config.models = [trimmedName, ...this.config.models];
       this.newModel = '';
     } else {
       AlertDialog.show({
@@ -54,23 +55,24 @@ struct Settings {
     Column() {
       // 标题栏
       Row() {
-          Image($r('app.media.ic_back'))
-            .width(24)
-            .height(24)
-            .margin({ right: 16 })
-            .onClick(() => {
-              router.back();
-            })
+        Image($r('app.media.ic_back'))
+          .width(24)
+          .height(24)
+          .margin({ right: 16 })
+          .onClick(() => {
+            router.back();
+          })
 
-          Text('设置')
-            .fontSize(20)
-            .fontWeight(FontWeight.Bold)
+        Text('设置')
+          .fontSize(20)
+          .fontWeight(FontWeight.Bold)
 
       }
       .width('100%')
       .height(56)
       .padding({ left: 16, right: 16 })
       .backgroundColor('#FFFFFF')
+
       Stack() {
         // 设置内容
         Scroll() {
@@ -78,17 +80,21 @@ struct Settings {
             // 基本设置
             Column() {
               SettingItem({
-                label: 'API密钥', value: this.config.apiKey, onChange: (value: string) => {
-                  this.config.apiKey = value;
+                label: 'API密钥',
+                placeholder: '请输入：sk-06d**********4cc9',
+                value: this.config.apiKey,
+                onChange: (value: string) => {
+                  this.config.apiKey = value.trim();
                 }
               });
               SettingItem({
-                label: 'API地址', value: this.config.apiUrl, onChange: (value: string) => {
-                  this.config.apiUrl = value;
+                label: '对话地址',
+                placeholder: '请输入：https://api.deepseek.com/chat/v1/completions',
+                value: this.config.apiUrl,
+                onChange: (value: string) => {
+                  this.config.apiUrl = value.trim();
                 }
               });
-
-
               Column() {
                 Text('最大Token数')
                   .fontSize(14)
@@ -102,16 +108,26 @@ struct Settings {
                   .borderRadius(4)
                   .padding({ left: 12, right: 12 })
                   .onChange((value: string) => {
-                    this.config.maxTokens = parseInt(value) || 0;
+                    this.config.maxTokens = parseInt(value.trim()) || 0;
                   })
               }
+              .alignItems(HorizontalAlign.Start)
               .width('100%')
               .margin({ bottom: 12 })
 
+              Text('如何获取？')
+                .padding({ top: 12,  bottom: 12 })
+                .fontSize(12)
+                .fontColor('#3271ae')
+                .onClick(() => {
+                  router.pushUrl({ url: AppRoutes.Tutorial });
+                })
             }
+            .alignItems(HorizontalAlign.Start)
             .padding(16)
             .backgroundColor(Color.White)
             .borderRadius(8)
+
 
             // 模型列表设置
             Column() {
@@ -223,8 +239,8 @@ struct Settings {
         Button('保存')
           .width(60)
           .height(60)
-          .position({x: '80%', y: 600})
-          .shadow({radius: 10})
+          .position({ x: '80%', y: 600 })
+          .shadow({ radius: 10 })
           .onClick(async () => {
             try {
               await this.configService.saveConfig(this.config);
@@ -235,7 +251,7 @@ struct Settings {
           })
 
 
-      } .width('100%')
+      }.width('100%')
       .height('100%')
 
     }
@@ -248,6 +264,7 @@ struct Settings {
 @Component
 struct SettingItem {
   label: string = '';
+  placeholder: string = '';
   @Prop value: string = '';
   onChange: (value: string) => void = () => {
   };
@@ -259,7 +276,7 @@ struct SettingItem {
         .fontColor('#666666')
         .margin({ bottom: 4 })
 
-      TextInput({ text: this.value })
+      TextInput({ text: this.value, placeholder: this.placeholder })
         .width('100%')
         .height(40)
         .backgroundColor('#F5F5F5')
@@ -269,6 +286,7 @@ struct SettingItem {
           this.onChange(value);
         })
     }
+    .alignItems(HorizontalAlign.Start)
     .width('100%')
     .margin({ bottom: 12 })
   }
@@ -311,6 +329,7 @@ struct SliderItem {
           this.onChange(roundedValue);
         })
     }
+    .alignItems(HorizontalAlign.Start)
     .width('100%')
     .margin({ bottom: 12 })
 

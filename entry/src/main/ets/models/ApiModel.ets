@@ -34,9 +34,16 @@ interface GeneratedTypeLiteralInterface_1 {
 }
 
 export interface ApiResponse {
-  id: string;
   choices: Array<GeneratedTypeLiteralInterface_1>;
 }
+export interface ApiResponseError {
+  error: ApiResponseErrorObj;
+}
+export interface ApiResponseErrorObj {
+  message: string;
+  code: string;
+}
+
 
 export interface ModelResponse {
   data: Model[];
@@ -81,3 +88,5 @@ export interface Chat {
   updateTime: number;
   messages: ChatMessage[];
 }
+
+

@@ -1,4 +1,4 @@
-import { KeyboardAvoidMode, router, window } from '@kit.ArkUI';
+import { KeyboardAvoidMode, promptAction, router, window } from '@kit.ArkUI';
 import { MessageService } from '../services/MessageService';
 import { ChatService } from '../services/ChatService';
 import { KeyboardUtils } from '../utils/KeyboardUtils';
@@ -133,6 +133,13 @@ struct ChatPage {
           .backgroundColor('#007AFF')
           .margin({ right: 8 })
           .onClick(async () => {
+            if(this.messageService.getCurrModel()=="deepseek-chat"){
+              promptAction.showToast({
+                message: '该模型暂不支持图片分析',
+                duration: 2000
+              });
+              return
+            }
             try {
               this.currentBase64img = await ImageUtils.getPictureFromAlbumWithBase64();
             } catch (error) {
@@ -142,6 +149,7 @@ struct ChatPage {
           })
 
           TextArea({ placeholder: '请输入消息...', text: this.inputMessage })
+            .constraintSize({ maxHeight: 200 })
             .layoutWeight(1)
             .backgroundColor('#F5F5F5')
             .borderRadius(20)
@@ -200,19 +208,21 @@ struct ChatPage {
         ForEach(content, (item: MessageContent) => {
           if (item.type === 'text') {
             Text(item.text)
+              .copyOption(CopyOptions.LocalDevice)
+              .padding(12)
               .fontSize(16)
               .fontColor(isUser ? Color.White : Color.Black)
           } else if (item.type === 'image_url') {
             Image(item.image_url!.url)
               .height('160')
-              .width('auto') // 宽度设置为自动，以保持比例
-              .margin({top:12})
+              .width('auto')// 宽度设置为自动，以保持比例
+              .margin({ top: 12 })
               .objectFit(ImageFit.Contain)
               .borderRadius(12)
           }
         })
       }
-      .alignItems(isUser?HorizontalAlign.End:HorizontalAlign.Start)
+      .alignItems(isUser ? HorizontalAlign.End : HorizontalAlign.Start)
       .padding(12)
       .backgroundColor(isUser ? '#007AFF' : Color.White)
       .foregroundColor(isUser ? Color.White : Color.Black)
@@ -227,6 +237,7 @@ struct ChatPage {
   private async sendMessage(): Promise<void> {
     if (this.inputMessage.trim() !== '') {
 
+      let hasImg = false
 
       const userMessage: ChatMessage = {
         content: this.inputMessage,
@@ -234,6 +245,7 @@ struct ChatPage {
       };
 
       if (this.currentBase64img) {
+        hasImg = true
         userMessage.content = [
           {
             type: "text",
@@ -276,7 +288,7 @@ struct ChatPage {
 
       try {
         // 发送消息并获取响应
-        const aiMessage = await this.messageService.sendMessage(this.messageList);
+        const aiMessage = await this.messageService.sendMessage(this.messageList,hasImg);
 
         // this.messageList[this.messageList.length - 1] = {
         //   content: aiMessage.content,
@@ -332,7 +344,8 @@ struct ChatPage {
       let avoidArea = currentWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM);
       let avoidAreaNAVIGATION = currentWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR);
       // 初始化显示区域高度
-      this.screenHeight = px2vp(property.windowRect.height - avoidArea.topRect.height - avoidArea.bottomRect.height-avoidAreaNAVIGATION.bottomRect.height);
+      this.screenHeight = px2vp(property.windowRect.height - avoidArea.topRect.height - avoidArea.bottomRect.height -
+      avoidAreaNAVIGATION.bottomRect.height);
       // 监视软键盘的弹出和收起
       currentWindow.on('avoidAreaChange', async data => {
         if (data.type !== window.AvoidAreaType.TYPE_KEYBOARD) {
@@ -340,10 +353,13 @@ struct ChatPage {
         }
         if (data.area.bottomRect.height <= 0) {
           this.isKeyBoardHidden = true;
-          this.screenHeight = px2vp(property.windowRect.height - avoidArea.topRect.height - data.area.bottomRect.height-avoidAreaNAVIGATION.bottomRect.height);
+          this.screenHeight =
+            px2vp(property.windowRect.height - avoidArea.topRect.height - data.area.bottomRect.height -
+            avoidAreaNAVIGATION.bottomRect.height);
         } else {
           this.isKeyBoardHidden = false;
-          this.screenHeight = px2vp(property.windowRect.height - avoidArea.topRect.height - data.area.bottomRect.height);
+          this.screenHeight =
+            px2vp(property.windowRect.height - avoidArea.topRect.height - data.area.bottomRect.height);
           this.scrollToBottom();
         }
       })

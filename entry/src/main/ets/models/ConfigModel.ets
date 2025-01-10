@@ -10,13 +10,13 @@ export class ChatConfig {
 
   constructor(
     apiKey: string = '',
-    apiUrl: string = 'https://api.vveai.com/v1/chat/completions',
+    apiUrl: string = 'https://api.deepseek.com/v1/chat/completions',
     maxTokens: number = 1688,
     temperature: number = 0.5,
     presencePenalty: number = 0,
     frequencyPenalty: number = 0,
     topP: number = 1,
-    models: string[] = ['gpt-4o', 'gpt-4o-mini','claude-3-5-sonnet-20241022']
+    models: string[] = ['deepseek-chat','gpt-4o-mini','gpt-4o','claude-3-5-sonnet-20241022']
   ) {
     this.apiKey = apiKey;
     this.apiUrl = apiUrl;

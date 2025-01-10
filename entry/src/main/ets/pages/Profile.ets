@@ -26,6 +26,12 @@ export struct Profile {
           // 设置列表
           List() {
             ListItem() {
+              this.SettingItem('使用教程', () => {
+                router.pushUrl({ url: AppRoutes.Tutorial });
+              })
+            }
+
+            ListItem() {
               this.SettingItem('模型设置', () => {
                 router.pushUrl({ url: AppRoutes.Settings });
               })
@@ -34,6 +40,12 @@ export struct Profile {
             ListItem() {
               this.SettingItem('关于我们', () => {
                 router.pushUrl({ url: AppRoutes.About });
+              })
+            }
+
+            ListItem() {
+              this.SettingItem('问题反馈', () => {
+                router.pushUrl({ url: AppRoutes.Report });
               })
             }
           }

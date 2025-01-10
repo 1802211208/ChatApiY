@@ -7,7 +7,7 @@ export class MessageService {
   private apiService: ApiService = new ApiService();
   private configService: ConfigService = ConfigService.getInstance();
   private currentConfig: ChatConfig = DEFAULT_CONFIG;
-  private currentModel: string = 'gpt-4o-mini';
+  private currentModel: string = '';
   private initPromise: Promise<void>;
 
   constructor() {
@@ -38,6 +38,9 @@ export class MessageService {
     await this.ensureInitialized();
     this.currentModel = modelId;
   }
+  getCurrModel():string{
+    return this.currentModel;
+  }
 
   async updateConfig(config: ChatConfig): Promise<void> {
     await this.ensureInitialized();
@@ -49,7 +52,7 @@ export class MessageService {
     return this.currentConfig.models;
   }
 
-  async sendMessage(messages: ChatMessage[]): Promise<ChatMessage> {
+  async sendMessage(messages: ChatMessage[],hasImg:boolean): Promise<ChatMessage> {
     await this.ensureInitialized();
     try {
       const chatConfig: ChatRequestConfig = {
@@ -71,10 +74,18 @@ export class MessageService {
       };
     } catch (error) {
       console.error('消息处理失败:', error);
-      return {
-        role: 'assistant',
-        content: "抱歉，响应出现错误：" + error
-      };
+      if(hasImg){
+        return {
+          role: 'assistant',
+          content: "抱歉，响应出现错误，请确认当前模型是否支持图片分析：" + error
+        };
+      }else{
+        return {
+          role: 'assistant',
+          content: "抱歉，响应出现错误：" + error
+        };
+      }
+
     }
   }
 

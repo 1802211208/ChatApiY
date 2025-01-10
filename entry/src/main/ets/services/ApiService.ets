@@ -1,5 +1,5 @@
 import { http } from '@kit.NetworkKit';
-import { ApifoxModel, ApiResponse, ChatMessage } from '../models/ApiModel';
+import { ApifoxModel, ApiResponse, ApiResponseError, ChatMessage } from '../models/ApiModel';
 
 export class ApiService {
   async chat(messages: ChatMessage[], config: ChatRequestConfig): Promise<string> {
@@ -31,18 +31,19 @@ export class ApiService {
         const responseData = response.result as ApiResponse;
         return responseData.choices[0].message.content as string;
       } else {
-        throw new Error(`HTTP错误: ${response.responseCode}`);
+        const responseData = response.result as ApiResponseError;
+        return `请确认您的配置是否正确！${responseData.error.message},`;
       }
     } catch (error) {
-     const errorStr =  JSON.stringify(error);
+      const errorStr = JSON.stringify(error);
       console.error('API请求失败:', errorStr);
-      throw new Error(`HTTP错误: ${errorStr}`);
+      throw new Error(`HTTP错误: 请确认您的配置是否正确！ ${errorStr}`);
     } finally {
       httpRequest.destroy();
     }
   }
-
 }
+
 
 export interface ChatRequestConfig {
   apiKey: string;

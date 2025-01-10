@@ -5,7 +5,7 @@ import bundleManager from '@ohos.bundle.bundleManager';
 @Component
 struct About {
   @State appVersion: string = '';
-  @State appName: string = 'ChatAI';
+  @State appName: string = 'ChatApiY';
 
   aboutToAppear() {
     // 获取应用版本信息
@@ -69,7 +69,7 @@ struct About {
             .margin({ bottom: 40 })
 
           // 应用简介
-          Text('ChatAI是一款基于OpenAI接口的AI聊天应用，支持多种AI模型，为您提供智能对话服务。')
+          Text('ChatApiY是一款AI接口聚合工具，支持对接多个兼容OpenAI接口的服务，为您提供智能对话服务。')
             .fontSize(14)
             .fontColor('#333333')
             .margin({ bottom: 24 })
@@ -78,28 +78,21 @@ struct About {
 
           Blank();
 
-          // 开发者信息
-          // Column({ space: 12 }) {
-          //   Text('翻斗花园')
-          //     .fontSize(14)
-          //     .fontColor('#666666')
-          //   Text('https://www.ikunnb.top')
-          //     .fontSize(14)
-          //     .fontColor('#666666')
-          // }
-          // .margin({ top: 20 })
-          // .padding(16)
-          // .width('100%')
-          // 版权信息'
+          Text('声明')
+            .fontSize(18)
+            .fontWeight(FontWeight.Bold)
+            .margin({ bottom: 12 })
 
-          Text('翻斗花园')
-            .fontSize(14)
-            .fontColor('#666666')
-            .margin({ top: 40 })
-          Text('© 2024 ChatAI All Rights Reserved')
+          Text('本应用是一个AI接口聚合工具，支持对接多个兼容OpenAI接口的服务。应用中提到的第三方服务名称（如DeepSeek等）均为其各自所有者的商标。本应用与这些服务提供商没有任何官方关联。\n\n用户在使用相关服务时，请遵守各服务提供商的服务条款和相关政策。本应用仅提供技术对接，不对第三方服务的可用性和内容承担责任。')
+            .fontSize(12)
+            .padding({ left: 20, right: 20 })
+            .fontColor('#999999')
+          Text('© 2025 ChatApiY All Rights Reserved')
             .fontSize(12)
             .fontColor('#999999')
             .margin({ top: 10, bottom: 20 })
+
+
 
         }.height('100%')
       }.layoutWeight(1)

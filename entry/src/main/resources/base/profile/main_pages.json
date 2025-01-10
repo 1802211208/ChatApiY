@@ -4,6 +4,8 @@
     "pages/Index",
     "pages/Settings",
     "pages/Chat",
-    "pages/About"
+    "pages/About",
+    "pages/Tutorial",
+    "pages/Report"
   ]
 }
