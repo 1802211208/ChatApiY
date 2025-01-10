@@ -33,7 +33,14 @@ struct Tutorial {
               .fontWeight(FontWeight.Bold)
               .margin({ bottom: 12 })
 
-            Text('ChatApiY是一个开源的AI接口聚合工具，支持对接多个兼容OpenAI接口的服务。您可以通过配置不同服务商的API密钥和接口地址来使用各种AI模型。\n\n目前支持的服务包括但不限于：\n· DeepSeek\n· OpenAI\n以及其他兼容OpenAI接口的服务')
+            Text('ChatApiY是一个开源的AI接口聚合工具，支持对接多个兼容OpenAI接口的服务。您可以通过配置不同服务商的API密钥和接口地址来使用各种AI模型。\n\n' +
+              '目前支持的服务包括但不限于：\n' +
+              '· DeepSeek\n' +
+              '· OpenAI\n' +
+              '· SiliconFlow\n' +
+              '· V3Api\n' +
+              '以及其他兼容OpenAI接口的服务\n' +
+              '因元服务域名请求限制，如有不支持访问的域名请即时联系我们')
               .fontSize(14)
               .fontColor('#666666')
               .margin({ bottom: 12 })
